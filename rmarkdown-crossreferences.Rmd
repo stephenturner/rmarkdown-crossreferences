@@ -1,0 +1,92 @@
+---
+title: "Table and Figure Cross-References in Plain RMarkdown"
+author: "Stephen Turner"
+date: "`r Sys.Date()`"
+output: 
+  pdf_document: 
+    fig_caption: true
+    number_sections: true
+    keep_tex: false
+    fig_height: 4
+---
+
+# Why
+
+Figure and table cross-referencing using the chunk label is easy if you're using [`bookdown::pdf_document`](https://bookdown.org/yihui/rmarkdown-cookbook/cross-ref.html) or [Quarto](https://quarto.org/docs/authoring/cross-references.html). Booktown and Quarto each have their own convenient way to cross-reference figures and tables using the chunk label. 
+
+But sometimes you might want to use plain RMarkdown. Maybe you're building an RMarkdown PDF template in your package and you don't want the bookdown dependency. Or maybe you're using one of the [rticles RMarkdown templates](https://pkgs.rstudio.com/rticles/), which haven't been replicated in Quarto yet. Here's how to enable figure and table cross-references using plain RMarkdown. 
+
+# How
+
+First, you must render the PDF with figure captions on. Put this in the front matter:
+
+```
+output: 
+  pdf_document: 
+    fig_caption: true
+```
+
+Next, label the figures or tables where they're created. For figures, include `\\label{fig:myfigure}` at the end of the `fig.cap=` chunk option. For tables, include `\\label{tab:mytable}` in the caption created by `knitr::kable(caption=)` call inside the chunk. You don't have to use the `fig:` or `tab:` ahead of whatever label you provide, but it's a helpful convention.
+
+Finally, reference the figure or table inline with `\ref{yourlabel}`.
+
+# Examples
+
+The examples below show what the RMarkdown and the rendered output look like for tables and figures.
+
+## Figures
+
+### RMarkdown
+
+````{verbatim}
+Figure \ref{fig:sine} shows a sine wave, and Figure \ref{fig:cos} shows a cosine wave.
+
+```{r, fig.cap="Here's a sine wave from zero to $4\\pi$. \\label{fig:sine}"}
+curve(sin(x), 0, 4*pi, lwd=4)
+```
+```{r, fig.cap="Here's a cosine wave from zero to $4\\pi$. \\label{fig:cos}"}
+curve(cos(x), 0, 4*pi, lwd=4)
+```
+````
+
+### Rendered
+
+Figure \ref{fig:sine} shows a sine wave, and Figure \ref{fig:cos} shows a cosine wave.
+
+```{r, echo=FALSE, fig.cap="Here's a sine wave from zero to $4\\pi$. \\label{fig:sine}"}
+curve(sin(x), 0, 4*pi, lwd=4)
+```
+
+```{r, echo=FALSE, fig.cap="Here's a cosine wave from zero to $4\\pi$. \\label{fig:cos}"}
+curve(cos(x), 0, 4*pi, lwd=4)
+```
+
+\newpage
+
+## Tables
+
+### RMarkdown
+
+````{verbatim}
+Table \ref{tab:mtcars} shows the first few lines of mtcars.
+Table \ref{tab:iris} shows the first few lines of iris.
+```{r}
+knitr::kable(head(mtcars), caption="Sample of rows from mtcars. \\label{tab:mtcars}")
+```
+```{r}
+knitr::kable(head(iris), caption="Sample of rows from iris. \\label{tab:iris}")
+```
+````
+
+### Rendered
+
+Table \ref{tab:mtcars} shows the first few lines of mtcars. 
+Table \ref{tab:iris} shows the first few lines of iris.
+
+```{r, echo=FALSE}
+knitr::kable(head(mtcars), caption="Sample of rows from mtcars. \\label{tab:mtcars}")
+```
+
+```{r, echo=FALSE}
+knitr::kable(head(iris), caption="Sample of rows from iris. \\label{tab:iris}")
+```

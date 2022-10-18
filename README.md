@@ -1,0 +1,3 @@
+Demo for how to use figure and table crossreferences with plain RMarkdown. For a complete walkthrough see the rendered [rmarkdown-crossreferences.pdf](rmarkdown-crossreferences.pdf) or the [rmarkdown-crossreferences.Rmd](rmarkdown-crossreferences.Rmd) that rendered it.
+
+To get right to the point, see the code in [rmarkdown-crossreferences-short.Rmd](rmarkdown-crossreferences-short.Rmd) and the rendered output in [rmarkdown-crossreferences-short.pdf](rmarkdown-crossreferences-short.pdf).
